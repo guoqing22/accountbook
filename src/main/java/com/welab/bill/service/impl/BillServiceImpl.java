@@ -24,7 +24,7 @@ public class BillServiceImpl implements IBillService {
 
     @Override
     public boolean insertBill(Tbbill bill) {
-        int num = billMapper.insert(bill);
+        int num = billMapper.insertSelective(bill);
         if (num == 1) {
             return true;
         } else {

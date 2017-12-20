@@ -134,7 +134,7 @@
                                 has_icon: true,
                                 has_close_btn: true,
                                 fullscreen: false,
-                                timeout: 50,
+                                timeout: 0,
                                 sticky: false,
                                 has_progress: true,
                                 rtl: false
@@ -146,7 +146,7 @@
                             has_icon: true,
                             has_close_btn: true,
                             fullscreen: false,
-                            timeout: 15,
+                            timeout: 0,
                             sticky: false,
                             has_progress: true,
                             rtl: false

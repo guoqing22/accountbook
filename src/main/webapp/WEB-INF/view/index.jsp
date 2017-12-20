@@ -11,6 +11,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String username1 = session.getAttribute("username").toString();
 %>
 <html lang="en">
 <head>
@@ -25,8 +26,6 @@
     <script type="text/javascript" src="<%= basePath%>resources/js/moment.min.js"></script>
     <script type="text/javascript" src="<%= basePath%>resources/js/daterangepicker.js"></script>
     <script type="text/javascript" src="<%= basePath%>resources/js/toast.script.js"></script>
-
-
 
 
     <style>
@@ -155,6 +154,7 @@
             text-align: center;
             vertical-align: middle;
         }
+
         .col-md-1 {
             padding: 0;
             margin: 0;
@@ -221,13 +221,15 @@
 <header style="background-color: #1b5a7d;color: white">
     <div class="container">
         <div class="row head-info">
-            <div class="col-md-2"><span>欢迎：</span><span id="user">王国庆</span></div>
+            <div class="col-md-2"><span>欢迎：</span><span id="user"><%= username1%></span></div>
             <div class="col-md-10 text-right"><p id="time1"></p></div>
         </div>
     </div>
     <div class="container">
         <div class="row" style="height: 50px">
-            <div class="col-md-4"><h3><a href="<%= basePath%>bill.jsp"><img class="logo" src="<%= basePath%>resources/img/284843.png"/> 个人帐务管理系统</a></h3>
+            <div class="col-md-4"><h3><a href="<%= basePath%>bill.jsp"><img class="logo"
+                                                                            src="<%= basePath%>resources/img/284843.png"/>
+                个人帐务管理系统</a></h3>
             </div>
             <div class="col-md-4 pull-right">
                 <ul class="nav nav-pills">
@@ -251,10 +253,14 @@
                     <div class="link-title-a">&#9733; 账单管理</div>
                     <div class="link-title-b">
                         <ul>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a></li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a></li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123405.png">&nbsp;删除账单</a></li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284863.png">&nbsp;修改账单</a></li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
+                            </li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
+                            </li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123405.png">&nbsp;删除账单</a>
+                            </li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284863.png">&nbsp;修改账单</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -263,11 +269,16 @@
                     <div class="link-title-a">&#9733; 图表信息</div>
                     <div class="link-title-b">
                         <ul>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284871.png">&nbsp;收支对比</a></li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284859.png">&nbsp;花费去向</a></li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284861.png">&nbsp;收入来源</a></li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284858.png">&nbsp;资金变化</a></li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/186244.png">&nbsp;图表赏析</a></li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284871.png">&nbsp;收支对比</a>
+                            </li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284859.png">&nbsp;花费去向</a>
+                            </li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284861.png">&nbsp;收入来源</a>
+                            </li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284858.png">&nbsp;资金变化</a>
+                            </li>
+                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/186244.png">&nbsp;图表赏析</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -314,6 +325,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div id="page3"></div>
                 </div>
 
             </div>
@@ -467,35 +479,32 @@
                         "end_date": end.format("YYYY-MM-DD HH:mm:ss")
                     }),
                     success: function (msg) {
-                        var tb = $("tbody");
-                        $(tb).empty();
-                        if (msg && msg.length > 0) {
-                            $.each(msg, function (i, row) {
-                                var tr = $('<tr>');
-                                $(tr).append('<td><i class="fa fa-circle-thin" aria-hidden="true"></i></td>');
-                                $(tr).append('<td>' + row.billid + '</td>');
-                                $(tr).append('<td>' + row.username + '</td>');
-                                $(tr).append('<td>' + row.billdate + '</td>');
-                                $(tr).append('<td>' + row.typeid + '</td>');
-                                $(tr).append('<td>' + row.classa + '</td>');
-                                $(tr).append('<td>' + row.billinfo + '</td>');
-                                $(tr).append('<td><a href="#">更新</a></td>');
-                                $(tr).append('<td><a href="#">删除</a></td>');
-                                $(tb).append(tr);
-                            });
-                        }
 
+                                var tb = $("tbody");
+                                $(tb).empty();
+                                if (msg && msg.length > 0) {
+                                    $.each(msg, function (i, row) {
+                                        var tr = $('<tr>');
+                                        $(tr).append('<td class="selectColumn"></td>');
+                                        $(tr).append('<td>' + row.billid + '</td>');
+                                        $(tr).append('<td>' + row.username + '</td>');
+                                        $(tr).append('<td>' + row.billdate + '</td>');
+                                        $(tr).append('<td>' + row.typeid + '</td>');
+                                        $(tr).append('<td>' + row.classa + '</td>');
+                                        $(tr).append('<td>' + row.billinfo + '</td>');
+                                        $(tr).append('<td><a href="#">更新</a></td>');
+                                        $(tr).append('<td><a href="#">删除</a></td>');
+                                        $(tb).append(tr);
+                                    });
+                                }
 
                     },
                     error: function (msg) {
-                        alert("123456")
-                        /*alert(msg.status)
-                        alert(msg.stringify)*/
                         $.Toast("请求出错", "错误代码：" + msg.stack(), "error", {
                             has_icon: true,
                             has_close_btn: true,
                             fullscreen: false,
-                            timeout: 15,
+                            timeout: 500,
                             sticky: false,
                             has_progress: true,
                             rtl: false
@@ -504,7 +513,6 @@
                 });
             }
         );
-
 
 
     });

@@ -1,5 +1,7 @@
 package com.welab.bill.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.welab.bill.pojo.Tbbill;
 import com.welab.bill.service.IBillService;
 import org.springframework.stereotype.Controller;
@@ -31,15 +33,39 @@ public class BillController {
     @RequestMapping("/selectbill")
     @ResponseBody
     public List<Tbbill> selectByBillDate(@RequestBody Map<String, String> myDate,
-                                 HttpServletRequest request) throws ParseException {
+                                         HttpServletRequest request) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date start_date = dateFormat.parse(myDate.get("start_date"));
         Date end_date = dateFormat.parse(myDate.get("end_date"));
-        System.out.println(start_date);
-        System.out.println(end_date);
-
-        List<Tbbill> bill = billService.selectBill(start_date,end_date);
-
+        PageHelper.startPage(1, 10);
+        List<Tbbill> bill = billService.selectBill(start_date, end_date);
+        PageInfo page = new PageInfo(bill);
+        System.out.println(page.getTotal());
+        System.out.println(page.getPageNum());
+        System.out.println(page.getPageSize());
         return bill;
+    }
+
+    @RequestMapping("/deletebill")
+    @ResponseBody
+    public Map<String, String> deleteByBillId(@RequestBody Map<String, String> billid, HttpServletRequest request) {
+        String id = billid.get("billid");
+        Map<String, String> map = new HashMap<>();
+        if (billService.delectBill(id)) {
+            map.put("successmsg", "success");
+        } else {
+            map.put("errormsg", "error");
+        }
+        return map;
+    }
+
+    public Map<String,String> insertBill(@RequestBody Tbbill bill,HttpServletRequest request){
+        Map<String,String> map = new HashMap<>();
+        if(billService.insertBill(bill)){
+            map.put("successmsg", "success");
+        } else {
+            map.put("errormsg", "error");
+        }
+        return map;
     }
 }

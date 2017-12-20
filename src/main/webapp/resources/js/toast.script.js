@@ -53,12 +53,20 @@
         }
 
         if($options.has_icon){
-            $('<i class="toast-icon toast-icon-' + type + '"></i>').appendTo($element);
+            $('<i class="toast-icon toast-icon-' + type + '" style="font-family: \'toast\' !important;\n' +
+                '  speak: none;\n' +
+                '  font-style: normal;\n' +
+                '  font-weight: normal;\n' +
+                '  font-variant: normal;\n' +
+                '  text-transform: none;\n' +
+                '  line-height: 1;\n' +
+                '  -webkit-font-smoothing: antialiased;\n' +
+                '  -moz-osx-font-smoothing: grayscale;"></i>').appendTo($element);
             if( $options.rtl){
                 css["padding-right"] = 50;
             } else {
                 css["padding-left"] = 50;
-            }            
+            }
         }
 
         if($options.has_progress && $options.timeout > 0){
