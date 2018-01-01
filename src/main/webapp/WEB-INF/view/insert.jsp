@@ -123,7 +123,11 @@
             border-bottom: 2px dotted #ffffff;
             margin: 5px;
         }
-
+        #insertbill-li{
+            text-shadow: 0 0 20px #17ddbd;
+            border-bottom: 2px dotted #ffffff;
+            margin: 5px;
+        }
         .menu .link-item .link-title-b a {
             color: #1b5a7d;
         }
@@ -168,7 +172,16 @@
             text-align: center;
             vertical-align: middle;
         }
-
+        .insert-form{
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-top: 10%;
+            background-color: #1b5a7d;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            box-sizing: border-box;
+        }
 
     </style>
 
@@ -209,9 +222,9 @@
                     <div class="link-title-a">&#9733; 账单管理</div>
                     <div class="link-title-b">
                         <ul>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
+                            <li id="index-li">><a href="<%=basePath%>bill/index"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
                             </li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
+                            <li id="insertbill-li"><a href="<%=basePath%>bill/insert"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
                             </li>
                             <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123405.png">&nbsp;删除账单</a>
                             </li>
@@ -253,33 +266,29 @@
                 <div class="main-title">账单管理/添加账单</div>
                 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                 <div id="main" style="width: 100%;height: 540px">
-                    <form>
+                    <form class="insert-form col-md-6 col-md-offset-3">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i></span>
-                            <input class="form-control" type="text" id="billdate" name="billdate" placeholder="日期"
-                                   disabled>
+                            <input class="form-control" type="text" id="billdate" name="billdate" placeholder="日期">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></span>
                             <select class="form-control">
-                                <option>支出</option>
                                 <option>收入</option>
+                                <option>支出</option>
                             </select>
                         </div>
-                        <div class="input-group">
+                        <div class="input-group" id = spy>
                             <span class="input-group-addon"><i class="fa fa-cube fa-fw" aria-hidden="true"></i></span>
-                            <input class="form-control" type="text" id="classa" name="classa" placeholder="分类"
-                                   disabled>
+                            <input class="form-control" type="text" id="classa" name="classa" placeholder="分类">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-cubes fa-fw" aria-hidden="true"></i></span>
-                            <input class="form-control" type="text" id="classb" name="classb" placeholder="分类"
-                                   disabled>
+                            <input class="form-control" type="text" id="classb" name="classb" placeholder="分类">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-money fa-fw" aria-hidden="true"></i></span>
-                            <input class="form-control" type="text" id="billamount" name="billamount" placeholder="0.00"
-                                   disabled>
+                            <input class="form-control" type="text" id="billamount" name="billamount" placeholder="0.00">
                         </div>
                     </form>
                 </div>
@@ -288,7 +297,109 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">个人资料</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban"
+                                                                                      aria-hidden="true"></i>关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
+
+
+    $("#spy").hide();
+
+    $("#classb").focus(function () {
+        $("#spy").show();
+        $("#classa").focus();
+    })
+
+    $("#userinfo").click(function () {
+        $("#myModal").modal(Option);
+    })
+    $("#modal-body").html(
+        '<form>'+
+        '<div class="input-group">'+
+        '<span class="input-group-addon"><i class="fa fa-user fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="username" name="username" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+        '<span class="input-group-addon"><i class="fa fa-user-secret fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="name" name="name" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+        '<span class="input-group-addon"><i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="birthday" name="birthday" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+        '<span class="input-group-addon"><i class="fa fa-users fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="sex" name="sex" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+        '<span class="input-group-addon"><i class="fa fa-info fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="userinfo1" name="userinfo1" placeholder="签名" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+        '<span class="input-group-addon"><i class="fa fa-money fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="useramount" name="useramount" placeholder="余额"disabled>'+
+        '</div>'+
+        '</form>'
+    );
+    $("#myModal").on('show.bs.modal', function () {
+        $.ajax({
+            url: "<%= basePath%>bill/getuserinfo",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "username": <%=username1%>
+            }),
+            success: function (data) {
+                $.Toast("请求成功", "查询完成", "success", {
+                    has_icon: true,
+                    has_close_btn: true,
+                    fullscreen: false,
+                    timeout: 2000,
+                    sticky: false,
+                    has_progress: true,
+                    rtl: false
+                });
+                var dataJson = data.data;
+                var transTime = new Date(dataJson.birthday);
+                $("#username").val(dataJson.username);
+                $("#name").val(dataJson.name);
+                $("#birthday").val(transTime.toLocaleDateString());
+                $("#sex").val(dataJson.sex);
+                $("#userinfo1").val(dataJson.billinfo);
+                $("#useramount").val(dataJson.useramount);
+            },
+            error: function (msg) {
+                $.Toast("请求失败", "错误代码"+msg.status, "success", {
+                    has_icon: true,
+                    has_close_btn: true,
+                    fullscreen: false,
+                    timeout: 2000,
+                    sticky: false,
+                    has_progress: true,
+                    rtl: false
+                });
+            }
+        });
+    });
+
     function mytime() {
         var a = new Date();
         var b = a.toLocaleTimeString();

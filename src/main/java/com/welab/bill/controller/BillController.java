@@ -101,5 +101,8 @@ public class BillController {
             map.put("data", tbbill);
         return map;
     }
-
+    @RequestMapping("/insert")
+    public String index() {
+        return "insert";
+    }
 }

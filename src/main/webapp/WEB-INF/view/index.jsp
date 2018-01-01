@@ -127,7 +127,11 @@
         .menu .link-item .link-title-b a {
             color: #1b5a7d;
         }
-
+        #index-li{
+            text-shadow: 0 0 20px #17ddbd;
+            border-bottom: 2px dotted #ffffff;
+            margin: 5px;
+        }
         .menu .link-title-b a:hover {
             color: #ffffff;
             text-decoration: none;
@@ -209,9 +213,9 @@
                     <div class="link-title-a">&#9733; 账单管理</div>
                     <div class="link-title-b">
                         <ul>
-                            <li><a href="<%=basePath%>bill/index"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
+                            <li id="index-li"><a href="<%=basePath%>bill/index"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
                             </li>
-                            <li><a href="<%=basePath%>bill/insertbill"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
+                            <li id="insertbill-li"><a href="<%=basePath%>bill/insert"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
                             </li>
                             <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123405.png">&nbsp;删除账单</a>
                             </li>
@@ -250,7 +254,7 @@
         <!--main面板-->
         <div class="col-md-10">
             <div class="main">
-                <div class="main-title">首页/CPI指数</div>
+                <div class="main-title">账单管理/账单查询</div>
                 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                 <div id="main" style="width: 100%;height: 540px">
                     <table id="tabledata"
@@ -297,8 +301,8 @@
                                                                                   aria-hidden="true"></i>提交更改
                 </button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
@@ -317,8 +321,8 @@
                                                                                       aria-hidden="true"></i>关闭
                 </button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </div>
+    </div>
 </div>
 <!--main char-->
 <%--<script>
