@@ -51,7 +51,7 @@
         <table tableName="tbdrawtype"  enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"
                delimitIdentifiers="false" />
-        <table tableName="tbdrawtype"  enableCountByExample="false"
+        <table tableName="tbdeposittype"  enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"
                delimitIdentifiers="false" />
     </context>

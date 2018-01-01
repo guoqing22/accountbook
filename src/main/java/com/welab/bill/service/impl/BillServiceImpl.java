@@ -43,7 +43,7 @@ public class BillServiceImpl implements IBillService {
     }
 
     @Override
-    public boolean delectBill(String billId) {
+    public boolean deleteBill(String billId) {
         int num = billMapper.deleteByPrimaryKey(billId);
         if (num == 1) {
             return true;
@@ -58,6 +58,17 @@ public class BillServiceImpl implements IBillService {
         list = billMapper.selectByBillDate(startdate,enddate);
         return list;
     }
+    @Override
+    public List<Tbbill> findAll() {
+        List<Tbbill> list = new ArrayList<>();
+        list = billMapper.findAll();
+        return list;
+    }
 
+    @Override
+    public Tbbill selectByBillId(String billid) {
+        Tbbill bill = billMapper.selectByPrimaryKey(billid);
+        return bill;
+    }
 
 }

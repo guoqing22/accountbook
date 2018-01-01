@@ -32,13 +32,21 @@ public interface IBillService {
      * @param billId 订单编号
      * @return
      */
-    public boolean delectBill(String billId);
+    public boolean deleteBill(String billId);
 
     /**
-     * jdbcType=TIMESTAMP
+     * 根据时间范围查找订单
      * @param startdate 开始时间
      * @param enddate 结束时间
      * @return
      */
     public List<Tbbill> selectBill(Date startdate,Date enddate);
+    public List<Tbbill> findAll();
+
+    /**
+     * 根据订单号查询订单信息
+     * @param billid 订单号
+     * @return bill 订单信息
+     */
+    public  Tbbill selectByBillId(String billid);
 }

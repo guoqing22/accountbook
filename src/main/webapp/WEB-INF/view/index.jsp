@@ -21,14 +21,28 @@
     <link rel="stylesheet" type="text/css" href="<%= basePath%>resources/css/daterangepicker.css">
     <link rel="stylesheet" type="text/css" href="<%= basePath%>resources/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="<%= basePath%>resources/css/toast.style.css">
+    <link rel="stylesheet" type="text/css" href="<%= basePath%>resources/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<%= basePath%>resources/css/sweetalert2.min.css">
+
     <script type="text/javascript" src="<%= basePath%>resources/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="<%= basePath%>resources/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="<%= basePath%>resources/js/moment.min.js"></script>
     <script type="text/javascript" src="<%= basePath%>resources/js/daterangepicker.js"></script>
     <script type="text/javascript" src="<%= basePath%>resources/js/toast.script.js"></script>
-
+    <script type="text/javascript" src="<%= basePath%>resources/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="<%= basePath%>resources/js/bootstrap.js"></script>
+    <script type="text/javascript" src="<%= basePath%>resources/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="<%= basePath%>resources/js/sweetalert2.all.min.js"></script>
 
     <style>
+
+        element.style {
+        }
+
+        myerror {
+            background: #0f0f0f;
+        }
+
         body {
             font-family: "思源宋体 CN";
             height: 100%;
@@ -81,7 +95,7 @@
 
         .menu {
             background-color: #F7F7F7;
-            height: 100%;
+            /*height: 100%;*/
         }
 
         .menu .link-item {
@@ -155,65 +169,7 @@
             vertical-align: middle;
         }
 
-        .col-md-1 {
-            padding: 0;
-            margin: 0;
-        }
 
-        .col-md-2 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-3 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-4 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-5 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-6 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-7 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-8 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-9 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-10 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-11 {
-            padding: 0;
-            margin: 0;
-        }
-
-        .col-md-12 {
-            padding: 0;
-            margin: 0;
-        }
     </style>
 
 </head>
@@ -297,40 +253,46 @@
                 <div class="main-title">首页/CPI指数</div>
                 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
                 <div id="main" style="width: 100%;height: 540px">
-                    <table id="dataGridTableJson"
+                    <table id="tabledata"
                            class="table table-striped table-bordered table-hover table-condensed">
                         <thead>
                         <tr>
-                            <th class="selectColumn">选择</th>
+                            <th>选择</th>
                             <th>账单号</th>
-                            <th>用户名</th>
-                            <th>日期<span id="inputDate"><i class="fa fa-calendar fa-fw"></i></span></th>
+                            <th>日期</th>
                             <th>存/取</th>
                             <th>一级</th>
                             <th>二级</th>
-                            <th colspan="2">操作</th>
+                            <th>金额</th>
+                            <th>用户名</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><i class="fa fa-circle-thin" aria-hidden="true"></i></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><a href="#">更改</a></td>
-                            <td><a href="#">删除</a></td>
-                        </tr>
+
                         </tbody>
                     </table>
-                    <div id="page3"></div>
                 </div>
 
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+            </div>
+            <div class="modal-body">点击关闭按钮检查事件功能。</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">提交更改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div>
 <!--main char-->
 <%--<script>
@@ -427,7 +389,184 @@
 </script>--%>
 <!--时间输入框设置-->
 <script type="text/javascript">
+    var table;
+    var start_date = moment().subtract('days', 30).format('YYYY-MM-DD HH:mm:ss');
+    var end_date = moment().format('YYYY-MM-DD HH:mm:ss');
     $(function () {
+
+        table = $('#tabledata').DataTable({
+            "ajax": {
+                "url": "<%=basePath%>bill/selectbill",
+                "dataType": "json",
+                /*"data": {
+                    //添加额外的参数传给服务器
+                    "start_date":start_date,
+                    "end_date":end_date
+                }*/
+                "data": function (d) {
+                    //添加额外的参数传给服务器
+                    d.start_date = start_date
+                    d.end_date = end_date
+                }
+            },
+            "columns": [
+                {"data": null},
+                {"data": "billid"},
+                {"data": "billdate"},
+                {
+                    "data": "typeid",
+                    render: function (data, type, row, meta) {
+                        return (data == 1 ? "存储" : "支出");
+                    }
+                },
+                {"data": "classa"},
+                {"data": "billinfo"},
+                {"data": "billamount"},
+                {"data": "username"},
+                {"data": "billid"},
+            ],
+            "columnDefs": [{
+                "targets": 8,// <span style="font-family:Arial, Helvetica, sans-serif;">操作例</span>的位置，从0开始数为第几例，
+
+                "searchable": false,
+                render: function (data, type, full) {
+                    return "<a id='upd' class='btn btn-info btn-xs' data-toggle='modal' data-target='#myModal'><i class='fa fa-pencil'></i>修改</a>"
+                        + "<button class='btn btn-danger btn-xs' onclick='deleteById(\"" + data.toString() + "\")'><i class='fa fa-remove'></i> 删除</button>"
+                }
+            }],
+            "language": {
+                "sUrl": "<%= basePath%>resources/language/dt_zh_CN.json"
+            },
+            "processing": true,
+            "serverSide": false,
+            "ordering": true,
+            "searching": true,
+            "bStateSave": true,
+            "bPaginate": true, //翻页功能
+            "bLengthChange": true, //改变每页显示数据数量
+            "bFilter": true, //过滤功能
+            "renderer": "bootstrap",
+            "bInfo": true,//页脚信息
+            "bAutoWidth": true,//自动宽度
+            "scrollY": "500px",
+            "scrollCollapse": "true",
+            "dom": "<'row'<'col-md-2'l><'#mytoolbox.col-md-4'><'col-md-6'f>r>" + "t" + "<'row'<'col-md-6'i><'col-md-6'p>>",
+            initComplete: initComplete
+        });
+        $('#myModal').modal('hide');
+    });
+
+    /**
+     * 表格加载渲染完毕后执行的方法
+     * @param data
+     */
+    function initComplete(data) {
+
+        var dataPlugin =
+            '<div id="reportrange" class="pull-left dateRange" style="width:400px;margin-left: 10px"> ' +
+            '日期：<i class="glyphicon glyphicon-calendar fa fa-calendar"></i> ' +
+            '<span id="searchStartDateRange"></span>  ' +
+            ' - ' +
+            '<span id="searchEndDateRange"></span>  ' +
+            '<b class="caret"></b></div> ';
+        $('#mytoolbox').append(dataPlugin);
+        //时间插件
+        $("#searchStartDateRange").html(start_date);
+        $("#searchEndDateRange").html(end_date);
+        $('#reportrange').daterangepicker(
+            {
+                // startDate: moment().startOf('day'),
+                //endDate: moment(),
+                //minDate: '01/01/2012',    //最小时间
+                maxDate: moment(), //最大时间
+                dateLimit: {
+                    days: 365
+                }, //起止时间的最大间隔
+                showDropdowns: true,
+                showWeekNumbers: false, //是否显示第几周
+                timePicker: true, //是否显示小时和分钟
+                timePickerIncrement: 60, //时间的增量，单位为分钟
+                timePicker12Hour: false, //是否使用12小时制来显示时间
+                ranges: {
+                    //'最近1小时': [moment().subtract('hours',1), moment()],
+                    '今日': [moment().startOf('day'), moment()],
+                    '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                    '最近7日': [moment().subtract('days', 6), moment()],
+                    '最近30日': [moment().subtract('days', 29), moment()]
+                },
+                opens: 'right', //日期选择框的弹出位置
+                buttonClasses: ['btn btn-default'],
+                applyClass: 'btn-small btn-primary blue',
+                cancelClass: 'btn-small',
+                format: 'YYYY-MM-DD HH:mm:ss', //控件中from和to 显示的日期格式
+                separator: ' to ',
+                locale: {
+                    applyLabel: '确定',
+                    cancelLabel: '取消',
+                    fromLabel: '起始时间',
+                    toLabel: '结束时间',
+                    customRangeLabel: '自定义',
+                    daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                    monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                    firstDay: 1
+                }
+            }, function (start, end, label) {//格式化日期显示框
+
+                $("#searchStartDateRange").html(start.format("YYYY-MM-DD HH-mm:ss"));
+                $("#searchEndDateRange").html(end.format("YYYY-MM-DD HH-mm:ss"));
+                start_date = start.format('YYYY-MM-DD HH:mm:ss');
+                end_date = end.format('YYYY-MM-DD HH:mm:ss')
+            });
+
+        //设置日期菜单被选项  --开始--
+        var dateOption;
+        if ("${riqi}" == 'day') {
+            dateOption = "今日";
+        } else if ("${riqi}" == 'yday') {
+            dateOption = "昨日";
+        } else if ("${riqi}" == 'week') {
+            dateOption = "最近7日";
+        } else if ("${riqi}" == 'month') {
+            dateOption = "最近30日";
+        } else if ("${riqi}" == 'year') {
+            dateOption = "最近一年";
+        } else {
+            dateOption = "自定义";
+        }
+        $(".daterangepicker").find("li").each(function () {
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+            }
+            if (dateOption == $(this).html()) {
+                $(this).addClass("active");
+            }
+        });
+        //设置日期菜单被选项  --结束--
+
+
+        //选择时间后触发重新加载的方法
+        $("#reportrange").on('apply.daterangepicker', function () {
+            //当选择时间后，出发dt的重新加载数据的方法
+            table.ajax.reload();
+            //获取dt请求参数
+            var args = table.ajax.params();
+            console.log("额外传到后台的参数值extra_search为：" + args.extra_search);
+        });
+
+        /*function getParam(url) {
+            var data = decodeURI(url).split("?")[1];
+            var param = {};
+            var strs = data.split("&");
+
+            for (var i = 0; i < strs.length; i++) {
+                param[strs[i].split("=")[0]] = strs[i].split("=")[1];
+            }
+            return param;
+        }*/
+    }
+
+    /*$(function () {
         var datatrangeoption = {
             startDate: moment().subtract(29, 'days').format('YYYY-MM-DD HH:mm:ss'),
             endDate: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -465,9 +604,8 @@
                     "7月", "8月", "9月", "10月", "11月", "12月"],
                 "firstDay": 1
             }
-
         };
-        $("#inputDate").daterangepicker(datatrangeoption,
+        var date_select = $("#inputDate").daterangepicker(datatrangeoption,
             function (start, end, label) {
                 $.ajax({
                     url: "<%= basePath%>bill/selectbill",
@@ -480,23 +618,94 @@
                     }),
                     success: function (msg) {
 
-                                var tb = $("tbody");
-                                $(tb).empty();
-                                if (msg && msg.length > 0) {
-                                    $.each(msg, function (i, row) {
-                                        var tr = $('<tr>');
-                                        $(tr).append('<td class="selectColumn"></td>');
-                                        $(tr).append('<td>' + row.billid + '</td>');
-                                        $(tr).append('<td>' + row.username + '</td>');
-                                        $(tr).append('<td>' + row.billdate + '</td>');
-                                        $(tr).append('<td>' + row.typeid + '</td>');
-                                        $(tr).append('<td>' + row.classa + '</td>');
-                                        $(tr).append('<td>' + row.billinfo + '</td>');
-                                        $(tr).append('<td><a href="#">更新</a></td>');
-                                        $(tr).append('<td><a href="#">删除</a></td>');
-                                        $(tb).append(tr);
-                                    });
-                                }
+                        var tb = $("tbody");
+                        $(tb).empty();
+                        if (msg && msg.length > 0) {
+                            $.each(msg, function (i, row) {
+                                var tr = $('<tr>');
+                                $(tr).append('<td class="selectColumn"></td>');
+                                $(tr).append('<td>' + row.billid + '</td>');
+                                $(tr).append('<td>' + row.username + '</td>');
+                                $(tr).append('<td>' + row.billdate + '</td>');
+                                $(tr).append('<td>' + row.typeid + '</td>');
+                                $(tr).append('<td>' + row.classa + '</td>');
+                                $(tr).append('<td>' + row.billinfo + '</td>');
+                                $(tr).append('<td><a href="javascript:void(0)" >更新</a></td>');
+                                $(tr).append('<td><a href="javascript:void(0)" onclick="deleteById(\''+row.billid+'\')">删除</a></td>');
+                                $(tb).append(tr);
+                            });
+                        }
+                    },
+                    error: function (msg) {
+                        $.Toast("请求出错", "错误代码：" + msg.stack(), "error", {
+                            has_icon: true,
+                            has_close_btn: true,
+                            fullscreen: false,
+                            timeout: 1000,
+                            sticky: false,
+                            has_progress: true,
+                            rtl: false
+                        });
+                    }
+                });
+            }
+        );
+        $('#dataGridTableJson').DataTable();
+
+    });*/
+
+    function edit(id) {
+
+    };
+
+    function deleteById(id) {
+        swal({
+            title: '确定要删除此条账单么?',
+            text: "删除之后无法恢复，请谨慎操作!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确定删除',
+            cancelButtonText: '取消',
+            confirmButtonClass: 'btn btn-success',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: "<%= basePath%>bill/deletebill",
+                    type: "post",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        "billid": id
+                    }),
+                    success: function (msg) {
+                        if (msg.successmsg != null) {
+                            table.ajax.reload();
+                            $.Toast("请求成功", msg.successmsg, "success", {
+                                has_icon: true,
+                                has_close_btn: true,
+                                fullscreen: false,
+                                timeout: 2000,
+                                sticky: false,
+                                has_progress: true,
+                                rtl: false
+                            });
+                        }
+                        else if (msg.errormsg != null) {
+                            $.Toast("请求成功", msg.errormsg, "warn", {
+                                has_icon: true,
+                                has_close_btn: true,
+                                fullscreen: false,
+                                timeout: 2000,
+                                sticky: false,
+                                has_progress: true,
+                                rtl: false
+                            });
+                        }
 
                     },
                     error: function (msg) {
@@ -510,12 +719,17 @@
                             rtl: false
                         });
                     }
-                });
+                })
+            } else if (result.dismiss === 'cancel') {
+                /*swal(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )*/
             }
-        );
+        })
 
-
-    });
+    };
 
     function mytime() {
         var a = new Date();

@@ -153,6 +153,13 @@
     select
     <include refid="Base_Column_List" />
     from tbbill
-    where billdate BETWEEN #{start_date,jdbcType=TIMESTAMP} AND #{end_date,jdbcType=TIMESTAMP}
+    where billdate BETWEEN #{start,jdbcType=TIMESTAMP} AND #{end,jdbcType=TIMESTAMP}
+  </select>
+
+
+  <select id="findAll" resultType="com.welab.bill.pojo.Tbbill" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbbill
   </select>
 </mapper>
