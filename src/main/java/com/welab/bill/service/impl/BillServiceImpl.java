@@ -34,7 +34,7 @@ public class BillServiceImpl implements IBillService {
 
     @Override
     public boolean updateBill(Tbbill bill) {
-        int num = billMapper.updateByPrimaryKey(bill);
+        int num = billMapper.updateByPrimaryKeySelective(bill);
         if (num == 1) {
             return true;
         } else {

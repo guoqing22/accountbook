@@ -98,6 +98,24 @@ public class UserController {
         }
         return map;
     }
+
+
+    @RequestMapping("/getuserinfo")
+    @ResponseBody
+    public Map<String, Object> getUserInfo(@RequestBody Tbuser user,
+                                     HttpServletRequest request) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (user.getUsername() == null) {
+            map.put("errormsg", "用户名不为空");
+        }
+        user = userService.getUserByUserName(user.getUsername());
+        if (user != null) {
+            map.put("data",user);
+        } else {
+            map.put("data", "error");
+        }
+        return map;
+    }
     @RequestMapping("/index")
     public String index() {
         return "index";

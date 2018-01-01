@@ -43,15 +43,7 @@ public class BillController {
         System.out.println(end_date);
         Date start = dateFormat.parse(start_date);
         Date end = dateFormat.parse(end_date);
-         List<Tbbill> bill = billService.selectBill(start,end);
-        /*PageInfo page = new PageInfo(bill);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("")*/
-        /*PageHelper.startPage(1, 10);*/
-        /*PageInfo page = new PageInfo(bill);
-        System.out.println(page.getTotal());
-        System.out.println(page.getPageNum());
-        System.out.println(page.getPageSize());*/
+        List<Tbbill> bill = billService.selectBill(start,end);
         Map<String,Object> map = new HashMap<>();
         map.put("data",bill);
         return map;
@@ -92,7 +84,7 @@ public class BillController {
     @ResponseBody
     public Map<String,Object> editBill(@RequestBody Tbbill bill,HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
-        if(billService.insertBill(bill)){
+        if(billService.updateBill(bill)){
             map.put("successmsg", "success");
         } else {
             map.put("errormsg", "error");

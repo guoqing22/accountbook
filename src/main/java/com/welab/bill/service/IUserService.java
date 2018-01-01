@@ -1,5 +1,6 @@
 package com.welab.bill.service;
 
+import com.welab.bill.pojo.Tbdeposittype;
 import com.welab.bill.pojo.Tbuser;
 
 import java.util.List;
@@ -39,5 +40,7 @@ public interface IUserService {
      * @return
      */
     public boolean addUser(Tbuser user);
+
+
 
 }

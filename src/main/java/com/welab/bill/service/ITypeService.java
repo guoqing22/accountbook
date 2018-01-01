@@ -1,5 +1,6 @@
 package com.welab.bill.service;
 
+import com.welab.bill.pojo.Tbdeposittype;
 import com.welab.bill.pojo.Tbdrawtype;
 
 import java.util.List;
@@ -11,6 +12,16 @@ import java.util.List;
  * @time: 23:29
  **/
 public interface ITypeService {
+    /**
+     * 查询所有收入选项
+     * @return
+     */
     public List<Tbdrawtype> listDrawType();
+
+    /**
+     * 查询所有支出选项
+     * @return
+     */
+    public List<Tbdeposittype> listDepositType();
 
 }

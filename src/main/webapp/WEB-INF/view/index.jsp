@@ -190,7 +190,7 @@
             <div class="col-md-4 pull-right">
                 <ul class="nav nav-pills">
                     <li role="presentation"><a href="#">首页</a></li>
-                    <li role="presentation"><a href="#">个人资料</a></li>
+                    <li role="presentation" id="userinfo"><a href="javascript:void(0)">个人资料</a></li>
                     <li role="presentation"><a href="#">安全设置</a></li>
                     <li role="presentation"><a href="#">关于</a></li>
                     <li role="presentation"><a href="#">退出</a></li>
@@ -209,9 +209,9 @@
                     <div class="link-title-a">&#9733; 账单管理</div>
                     <div class="link-title-b">
                         <ul>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
+                            <li><a href="<%=basePath%>bill/index"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
                             </li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
+                            <li><a href="<%=basePath%>bill/insertbill"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
                             </li>
                             <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123405.png">&nbsp;删除账单</a>
                             </li>
@@ -284,12 +284,38 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+                <h4 class="modal-title" id="myModalLabel">修改</h4>
             </div>
-            <div class="modal-body">点击关闭按钮检查事件功能。</div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">提交更改</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban"
+                                                                                      aria-hidden="true"></i>取消
+                </button>
+                <button type="button" id="btn_sublimt" class="btn btn-primary"><i class="fa fa-check-circle-o"
+                                                                                  aria-hidden="true"></i>提交更改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel1">个人资料</h4>
+            </div>
+            <div class="modal-body" id="modal-body1">
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-ban"
+                                                                                      aria-hidden="true"></i>关闭
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -392,6 +418,7 @@
     var table;
     var start_date = moment().subtract('days', 30).format('YYYY-MM-DD HH:mm:ss');
     var end_date = moment().format('YYYY-MM-DD HH:mm:ss');
+    var billid;
     $(function () {
 
         table = $('#tabledata').DataTable({
@@ -405,7 +432,7 @@
                 }*/
                 "data": function (d) {
                     //添加额外的参数传给服务器
-                    d.start_date = start_date
+                    d.start_date = start_date;
                     d.end_date = end_date
                 }
             },
@@ -430,8 +457,8 @@
 
                 "searchable": false,
                 render: function (data, type, full) {
-                    return "<a id='upd' class='btn btn-info btn-xs' data-toggle='modal' data-target='#myModal'><i class='fa fa-pencil'></i>修改</a>"
-                        + "<button class='btn btn-danger btn-xs' onclick='deleteById(\"" + data.toString() + "\")'><i class='fa fa-remove'></i> 删除</button>"
+                    return "<button id='edit' class='btn btn-info btn-xs' onclick='edit(\"" + data + "\")'><i class=\"fa fa-pencil\"></i>修改</button>"
+                        + "<button class='btn btn-danger btn-xs' onclick='deleteById(\"" + data + "\")'><i class='fa fa-remove'></i> 删除</button>"
                 }
             }],
             "language": {
@@ -453,7 +480,195 @@
             "dom": "<'row'<'col-md-2'l><'#mytoolbox.col-md-4'><'col-md-6'f>r>" + "t" + "<'row'<'col-md-6'i><'col-md-6'p>>",
             initComplete: initComplete
         });
-        $('#myModal').modal('hide');
+
+
+        $("#modal-body").html(
+            '<form>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-list-ol fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="billid" name="billid" placeholder="billid" disabled>' +
+            '</div>' +
+            ' <div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="billdate" name="billdate" placeholder="billdate" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-bars fa-fw"></i></span>' +
+            '<input class="form-control" type="text" id="billtype" name="billtype" placeholder="billtype" disabled>' +
+            '</div>' +
+            '<div class="input-group" id="spy">' +
+            '<span class="input-group-addon"><i class="fa fa-cube fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="classa" name="classa" placeholder="classa" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-cubes fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="classb" name="classb" placeholder="classb" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-money fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="number" id="billamount" name="billamount" placeholder="billamount">' +
+            '</div>' +
+            '</form>'
+        );
+
+        $("#myModal").on('show.bs.modal', function (obj) {
+            $.ajax({
+                url: "<%= basePath%>bill/selectbillbyid",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "billid": billid
+                }),
+                success: function (data) {
+                    var dataJson = data.data;
+                    var type = dataJson.typeid;
+                    var type1;
+                    if (type == 1) {
+                        $("#spy").hide();
+                        type1 = "收入";
+                    }
+                    else if (type == 0) {
+                        $("#spy").show();
+                        type1 = "支出";
+                    }
+                    $("#billid").val(billid);
+                    $("#billdate").val(dataJson.billdate);
+                    $("#billtype").val(type1);
+                    $("#classa").val(dataJson.classa);
+                    $("#classb").val(dataJson.billinfo);
+                    $("#billamount").val(dataJson.billamount);
+                },
+                error: function (msg) {
+                    alert(msg.status)
+                }
+            });
+        });
+
+        $("#btn_sublimt").click(function () {
+            var billamount = document.getElementById("billamount").value;
+            $.ajax({
+                url: "<%= basePath%>bill/editbill",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "billid": billid,
+                    "billamount": billamount
+                }),
+                success: function (msg) {
+                    if (msg.successmsg != null) {
+                        $("#myModal").modal("hide");
+                        table.ajax.reload();
+                        $.Toast("请求成功", msg.successmsg, "success", {
+                            has_icon: true,
+                            has_close_btn: true,
+                            fullscreen: false,
+                            timeout: 2000,
+                            sticky: false,
+                            has_progress: true,
+                            rtl: false
+                        });
+                    }
+                    else if (msg.errormsg != null) {
+                        $.Toast("请求成功", msg.errormsg, "warn", {
+                            has_icon: true,
+                            has_close_btn: true,
+                            fullscreen: false,
+                            timeout: 2000,
+                            sticky: false,
+                            has_progress: true,
+                            rtl: false
+                        });
+                    }
+
+                },
+                error: function (msg) {
+                    $.Toast("请求出错", "错误代码：" + msg.stack(), "error", {
+                        has_icon: true,
+                        has_close_btn: true,
+                        fullscreen: false,
+                        timeout: 500,
+                        sticky: false,
+                        has_progress: true,
+                        rtl: false
+                    });
+                }
+            })
+
+        });
+        $("#userinfo").click(function () {
+            $("#myModal1").modal(Option);
+        })
+        $("#modal-body1").html(
+        '<form>'+
+        '<div class="input-group">'+
+            '<span class="input-group-addon"><i class="fa fa-user fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="username" name="username" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+            '<span class="input-group-addon"><i class="fa fa-user-secret fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="name" name="name" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+            '<span class="input-group-addon"><i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="birthday" name="birthday" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+            '<span class="input-group-addon"><i class="fa fa-users fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="sex" name="sex" placeholder="billid" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+            '<span class="input-group-addon"><i class="fa fa-info fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="userinfo1" name="userinfo1" placeholder="签名" disabled>'+
+        '</div>'+
+        '<div class="input-group">'+
+            '<span class="input-group-addon"><i class="fa fa-money fa-fw" aria-hidden="true"></i></span>'+
+        '<input class="form-control" type="text" id="useramount" name="useramount" placeholder="余额"disabled>'+
+        '</div>'+
+        '</form>'
+        );
+        $("#myModal1").on('show.bs.modal', function () {
+            $.ajax({
+                url: "<%= basePath%>bill/getuserinfo",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "username": <%=username1%>
+                }),
+                success: function (data) {
+                    $.Toast("请求成功", "查询完成", "success", {
+                        has_icon: true,
+                        has_close_btn: true,
+                        fullscreen: false,
+                        timeout: 2000,
+                        sticky: false,
+                        has_progress: true,
+                        rtl: false
+                    });
+                    var dataJson = data.data;
+                    var transTime = new Date(dataJson.birthday);
+                    $("#username").val(dataJson.username);
+                    $("#name").val(dataJson.name);
+                    $("#birthday").val(transTime.toLocaleDateString());
+                    $("#sex").val(dataJson.sex);
+                    $("#userinfo1").val(dataJson.billinfo);
+                    $("#useramount").val(dataJson.useramount);
+                },
+                error: function (msg) {
+                    $.Toast("请求失败", "错误代码"+msg.status, "success", {
+                        has_icon: true,
+                        has_close_btn: true,
+                        fullscreen: false,
+                        timeout: 2000,
+                        sticky: false,
+                        has_progress: true,
+                        rtl: false
+                    });
+                }
+            });
+        });
     });
 
     /**
@@ -553,109 +768,11 @@
             var args = table.ajax.params();
             console.log("额外传到后台的参数值extra_search为：" + args.extra_search);
         });
-
-        /*function getParam(url) {
-            var data = decodeURI(url).split("?")[1];
-            var param = {};
-            var strs = data.split("&");
-
-            for (var i = 0; i < strs.length; i++) {
-                param[strs[i].split("=")[0]] = strs[i].split("=")[1];
-            }
-            return param;
-        }*/
     }
 
-    /*$(function () {
-        var datatrangeoption = {
-            startDate: moment().subtract(29, 'days').format('YYYY-MM-DD HH:mm:ss'),
-            endDate: moment().format('YYYY-MM-DD HH:mm:ss'),
-            minDate: '01/01/2010',
-            maxDate: '12/31/2100',
-            dateLimit: {
-                days: 365
-            },
-            showDropdowns: true,
-            timePicker: true,
-            timePickerIncrement: 1,
-            timePicker24Hour: true,
-            alwaysShowCalendars: true,
-            calender_style: "picker_4",
-            ranges: {
-                "今日": [moment().startOf("day"), moment()],
-                "昨日": [moment().subtract("days", 1).startOf("day"), moment().subtract("days", 1).endOf("day")],
-                "最近7日": [moment().subtract("days", 6), moment()],
-                "最近30日": [moment().subtract("days", 29), moment()],
-                "本月": [moment().startOf("month"), moment().endOf("month")],
-                "上个月": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
-            },
-
-            locale: {
-                "format": "YYYY-MM-DD HH:mm:ss",
-                "separator": " - ",
-                "applyLabel": "应用",
-                "cancelLabel": "取消",
-                "fromLabel": "开始时间",
-                "toLabel": "结束时间",
-                "customRangeLabel": "自定义",
-                "weekLabel": "周",
-                "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                "monthNames": ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
-                "firstDay": 1
-            }
-        };
-        var date_select = $("#inputDate").daterangepicker(datatrangeoption,
-            function (start, end, label) {
-                $.ajax({
-                    url: "<%= basePath%>bill/selectbill",
-                    type: "post",
-                    dataType: "json",
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        "start_date": start.format("YYYY-MM-DD HH:mm:ss"),
-                        "end_date": end.format("YYYY-MM-DD HH:mm:ss")
-                    }),
-                    success: function (msg) {
-
-                        var tb = $("tbody");
-                        $(tb).empty();
-                        if (msg && msg.length > 0) {
-                            $.each(msg, function (i, row) {
-                                var tr = $('<tr>');
-                                $(tr).append('<td class="selectColumn"></td>');
-                                $(tr).append('<td>' + row.billid + '</td>');
-                                $(tr).append('<td>' + row.username + '</td>');
-                                $(tr).append('<td>' + row.billdate + '</td>');
-                                $(tr).append('<td>' + row.typeid + '</td>');
-                                $(tr).append('<td>' + row.classa + '</td>');
-                                $(tr).append('<td>' + row.billinfo + '</td>');
-                                $(tr).append('<td><a href="javascript:void(0)" >更新</a></td>');
-                                $(tr).append('<td><a href="javascript:void(0)" onclick="deleteById(\''+row.billid+'\')">删除</a></td>');
-                                $(tb).append(tr);
-                            });
-                        }
-                    },
-                    error: function (msg) {
-                        $.Toast("请求出错", "错误代码：" + msg.stack(), "error", {
-                            has_icon: true,
-                            has_close_btn: true,
-                            fullscreen: false,
-                            timeout: 1000,
-                            sticky: false,
-                            has_progress: true,
-                            rtl: false
-                        });
-                    }
-                });
-            }
-        );
-        $('#dataGridTableJson').DataTable();
-
-    });*/
-
     function edit(id) {
-
+        billid = id;
+        $("#myModal").modal(Option);
     };
 
     function deleteById(id) {
@@ -721,15 +838,16 @@
                     }
                 })
             } else if (result.dismiss === 'cancel') {
-                /*swal(
-                    'Cancelled',
-                    'Your imaginary file is safe :)',
-                    'error'
-                )*/
             }
         })
+    }
 
-    };
+    function ChangeDateFormat(cellval) {
+        var date2 = new Date(parseInt(cellval.replace("/Date(", "").replace(")/", ""), 10));
+        var month2 = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+        var currentDate2 = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+        return date2.getFullYear() + "-" + month2 + "-" + currentDate2;
+    }
 
     function mytime() {
         var a = new Date();
