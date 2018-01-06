@@ -21,14 +21,14 @@ import java.util.List;
 public class TypeServiceImpl implements ITypeService{
     @Resource
     private TbdrawtypeMapper drawtypeMapper;
-    private TbdeposittypeMapper deposittypeMapper;
-
     @Override
     public List<Tbdrawtype> listDrawType() {
         List<Tbdrawtype> drawtype = drawtypeMapper.getAll();
         return drawtype;
     }
 
+    @Resource
+    private TbdeposittypeMapper deposittypeMapper;
     @Override
     public List<Tbdeposittype> listDepositType() {
         List<Tbdeposittype> deposittype = deposittypeMapper.getAll();

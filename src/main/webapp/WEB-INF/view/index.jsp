@@ -457,7 +457,7 @@
                 {"data": "billid"},
             ],
             "columnDefs": [{
-                "targets": 8,// <span style="font-family:Arial, Helvetica, sans-serif;">操作例</span>的位置，从0开始数为第几例，
+                "targets": 8,
 
                 "searchable": false,
                 render: function (data, type, full) {

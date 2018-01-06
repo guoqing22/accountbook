@@ -34,6 +34,14 @@ public class BillController {
     private HttpServletRequest request;
     private Model model;
 
+    /**
+     * 根据日期范围查询账单
+     * @param start_date 开始日期
+     * @param end_date 结束日期
+     * @param request
+     * @return map json
+     * @throws ParseException
+     */
     @RequestMapping("/selectbill")
     @ResponseBody
     public Map<String,Object> selectByBillDate(@Param("start_date") String start_date,@Param("end_date") String end_date,
@@ -49,6 +57,12 @@ public class BillController {
         return map;
     }
 
+    /**
+     * 根据订单编号删除订单
+     * @param bill 接受订单编号 json
+     * @param request
+     * @return map json
+     */
     @RequestMapping("/deletebill")
     @ResponseBody
     public Map<String, String> deleteByBillId(@RequestBody Tbbill bill, HttpServletRequest request) {
@@ -62,10 +76,26 @@ public class BillController {
         }
         return map;
     }
+
+    /**
+     * 新增账单
+     * @param bill 接受账单信息
+     * @param request
+     * @return map json
+     */
     @RequestMapping("/insertbill")
     @ResponseBody
     public Map<String,String> insertBill(@RequestBody Tbbill bill,HttpServletRequest request){
+        if (bill.getClassa()==""){
+            bill.setClassa(null);
+        }
         Map<String,String> map = new HashMap<>();
+        System.out.println(bill.getBilldate());
+        System.out.println(bill.getUsername());
+        System.out.println(bill.getBillamount());
+        System.out.println(bill.getBillinfo());
+        System.out.println(bill.getClassa());
+        System.out.println(bill.getTypeid());
         if(billService.insertBill(bill)){
             map.put("successmsg", "success");
         } else {
@@ -74,12 +104,12 @@ public class BillController {
         return map;
     }
 
-  /*  public Tbbill findAll(int draw, int start, int length, String roleName){
-        PageInfo<Tbbill> pageInfo = billService.selectAuthRoleByPage((start/length)+1, length, roleName);
-        Map<String, Object> map = new HashMap<String, Object>();
-        List<Object> data = new ArrayList<Object>();
-    }*/
-
+    /**
+     * 根据账单编号修改账单
+     * @param bill 接受账单信息 json
+     * @param request
+     * @return map json
+     */
     @RequestMapping("/editbill")
     @ResponseBody
     public Map<String,Object> editBill(@RequestBody Tbbill bill,HttpServletRequest request){
@@ -92,7 +122,12 @@ public class BillController {
         return map;
     }
 
-
+    /**
+     * 通过订单编号查询订单
+     * @param bill 接受订单编号 json
+     * @param request
+     * @return map json
+     */
     @RequestMapping("/selectbillbyid")
     @ResponseBody
     public Map<String,Object> selectbillbyid(@RequestBody Tbbill bill,HttpServletRequest request){
@@ -101,8 +136,13 @@ public class BillController {
             map.put("data", tbbill);
         return map;
     }
+
+    /**
+     * insert页面
+     * @return
+     */
     @RequestMapping("/insert")
-    public String index() {
+    public String insert() {
         return "insert";
     }
 }

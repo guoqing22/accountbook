@@ -31,6 +31,13 @@ public class UserController {
     private HttpServletRequest request;
     private Model model;
 
+    /**
+     * 注册
+     * @param user 接受用户信息 json
+     * @param request
+     * @return map json
+     * @throws Exception
+     */
     @RequestMapping("/register")
     @ResponseBody
     public Map<String, Object> register(@RequestBody Tbuser user,
@@ -73,11 +80,13 @@ public class UserController {
         return map;
     }
 
-    @RequestMapping("/welcome")
-    public String welcome() {
-        return "/welcome";
-    }
-
+    /**
+     * 登陆
+     * @param user 接收用户名和密码
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/login")
     @ResponseBody
     public Map<String, Object> login(@RequestBody Tbuser user,
@@ -99,7 +108,13 @@ public class UserController {
         return map;
     }
 
-
+    /**
+     * 根据用户名查询用户信息
+     * @param user 用于接受用户名
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/getuserinfo")
     @ResponseBody
     public Map<String, Object> getUserInfo(@RequestBody Tbuser user,
@@ -116,6 +131,11 @@ public class UserController {
         }
         return map;
     }
+
+    /**
+     * index页面
+     * @return
+     */
     @RequestMapping("/index")
     public String index() {
         return "index";
