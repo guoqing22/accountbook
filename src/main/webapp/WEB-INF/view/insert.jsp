@@ -184,7 +184,10 @@
             z-index: 100;
             box-sizing: border-box;
         }
-
+        .input-group{
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
     </style>
 
 </head>
@@ -208,7 +211,7 @@
                     <li role="presentation" id="userinfo"><a href="javascript:void(0)">个人资料</a></li>
                     <li role="presentation"><a href="#">安全设置</a></li>
                     <li role="presentation"><a href="#">关于</a></li>
-                    <li role="presentation"><a href="#">退出</a></li>
+                    <li role="presentation" id="logout"><a href="javascript:void(0)">退出</a></li>
                 </ul>
             </div>
         </div>
@@ -224,7 +227,7 @@
                     <div class="link-title-a">&#9733; 账单管理</div>
                     <div class="link-title-b">
                         <ul>
-                            <li id="index-li">><a href="<%=basePath%>bill/index"><img class="png"
+                            <li id="index-li"><a href="<%=basePath%>bill/index"><img class="png"
                                                                                       src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
                             </li>
                             <li id="insertbill-li"><a href="<%=basePath%>bill/insert"><img class="png"
@@ -295,11 +298,11 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-money fa-fw" aria-hidden="true"></i></span>
-                            <input class="form-control" type="text" id="billamount" name="billamount"
+                            <input class="form-control" type="number" id="billamount" name="billamount"
                                    placeholder="0.00">
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-md-10">
+                        <div class="input-group">
+                            <div class="col-sm-offset-2 col-md-2">
                                 <button type="submit" class="btn btn-default" id="insertBtn">确定</button>
                             </div>
                         </div>
@@ -333,6 +336,17 @@
 <script>
 
     $(function () {
+        //注销
+        $("#logout").click(function () {
+            $.ajax({
+                url: "<%=basePath%>bill/logout",
+                type: "post",
+                success:function () {
+                    window.location.href="<%=basePath%>login.jsp"
+                }
+            })
+
+        });
         //个人信息
         $("#userinfo").click(function () {
             $("#myModal").modal(Option);

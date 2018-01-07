@@ -127,11 +127,13 @@
         .menu .link-item .link-title-b a {
             color: #1b5a7d;
         }
-        #index-li{
+
+        #index-li {
             text-shadow: 0 0 20px #17ddbd;
             border-bottom: 2px dotted #ffffff;
             margin: 5px;
         }
+
         .menu .link-title-b a:hover {
             color: #ffffff;
             text-decoration: none;
@@ -197,7 +199,7 @@
                     <li role="presentation" id="userinfo"><a href="javascript:void(0)">个人资料</a></li>
                     <li role="presentation"><a href="#">安全设置</a></li>
                     <li role="presentation"><a href="#">关于</a></li>
-                    <li role="presentation"><a href="#">退出</a></li>
+                    <li role="presentation" id="logout"><a href="javascript:void(0)">退出</a></li>
                 </ul>
             </div>
         </div>
@@ -213,9 +215,11 @@
                     <div class="link-title-a">&#9733; 账单管理</div>
                     <div class="link-title-b">
                         <ul>
-                            <li id="index-li"><a href="<%=basePath%>bill/index"><img class="png" src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
+                            <li id="`"><a href="<%=basePath%>bill/index"><img class="png"
+                                                                              src="<%= basePath%>resources/img/284868.png">&nbsp;账单查询</a>
                             </li>
-                            <li id="insertbill-li"><a href="<%=basePath%>bill/insert"><img class="png" src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
+                            <li id="insertbill-li"><a href="<%=basePath%>bill/insert"><img class="png"
+                                                                                           src="<%= basePath%>resources/img/123397.png">&nbsp;添加账单</a>
                             </li>
                             <li><a href="#"><img class="png" src="<%= basePath%>resources/img/123405.png">&nbsp;删除账单</a>
                             </li>
@@ -261,7 +265,6 @@
                            class="table table-striped table-bordered table-hover table-condensed">
                         <thead>
                         <tr>
-                            <th>选择</th>
                             <th>账单号</th>
                             <th>日期</th>
                             <th>存/取</th>
@@ -441,7 +444,6 @@
                 }
             },
             "columns": [
-                {"data": null},
                 {"data": "billid"},
                 {"data": "billdate"},
                 {
@@ -457,7 +459,7 @@
                 {"data": "billid"},
             ],
             "columnDefs": [{
-                "targets": 8,
+                "targets": 7,
 
                 "searchable": false,
                 render: function (data, type, full) {
@@ -479,7 +481,7 @@
             "renderer": "bootstrap",
             "bInfo": true,//页脚信息
             "bAutoWidth": true,//自动宽度
-            "scrollY": "500px",
+            "scrollY": "420px",
             "scrollCollapse": "true",
             "dom": "<'row'<'col-md-2'l><'#mytoolbox.col-md-4'><'col-md-6'f>r>" + "t" + "<'row'<'col-md-6'i><'col-md-6'p>>",
             initComplete: initComplete
@@ -601,36 +603,46 @@
             })
 
         });
+        $("#logout").click(function () {
+            $.ajax({
+                url: "<%=basePath%>bill/logout",
+                type: "post",
+                success:function () {
+                    window.location.href="<%=basePath%>login.jsp"
+                }
+            })
+
+        });
         $("#userinfo").click(function () {
             $("#myModal1").modal(Option);
-        })
+        });
         $("#modal-body1").html(
-        '<form>'+
-        '<div class="input-group">'+
-            '<span class="input-group-addon"><i class="fa fa-user fa-fw" aria-hidden="true"></i></span>'+
-        '<input class="form-control" type="text" id="username" name="username" placeholder="billid" disabled>'+
-        '</div>'+
-        '<div class="input-group">'+
-            '<span class="input-group-addon"><i class="fa fa-user-secret fa-fw" aria-hidden="true"></i></span>'+
-        '<input class="form-control" type="text" id="name" name="name" placeholder="billid" disabled>'+
-        '</div>'+
-        '<div class="input-group">'+
-            '<span class="input-group-addon"><i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i></span>'+
-        '<input class="form-control" type="text" id="birthday" name="birthday" placeholder="billid" disabled>'+
-        '</div>'+
-        '<div class="input-group">'+
-            '<span class="input-group-addon"><i class="fa fa-users fa-fw" aria-hidden="true"></i></span>'+
-        '<input class="form-control" type="text" id="sex" name="sex" placeholder="billid" disabled>'+
-        '</div>'+
-        '<div class="input-group">'+
-            '<span class="input-group-addon"><i class="fa fa-info fa-fw" aria-hidden="true"></i></span>'+
-        '<input class="form-control" type="text" id="userinfo1" name="userinfo1" placeholder="签名" disabled>'+
-        '</div>'+
-        '<div class="input-group">'+
-            '<span class="input-group-addon"><i class="fa fa-money fa-fw" aria-hidden="true"></i></span>'+
-        '<input class="form-control" type="text" id="useramount" name="useramount" placeholder="余额"disabled>'+
-        '</div>'+
-        '</form>'
+            '<form>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-user fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="username" name="username" placeholder="billid" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-user-secret fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="name" name="name" placeholder="billid" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-birthday-cake fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="birthday" name="birthday" placeholder="billid" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-users fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="sex" name="sex" placeholder="billid" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-info fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="userinfo1" name="userinfo1" placeholder="签名" disabled>' +
+            '</div>' +
+            '<div class="input-group">' +
+            '<span class="input-group-addon"><i class="fa fa-money fa-fw" aria-hidden="true"></i></span>' +
+            '<input class="form-control" type="text" id="useramount" name="useramount" placeholder="余额"disabled>' +
+            '</div>' +
+            '</form>'
         );
         $("#myModal1").on('show.bs.modal', function () {
             $.ajax({
@@ -661,7 +673,7 @@
                     $("#useramount").val(dataJson.useramount);
                 },
                 error: function (msg) {
-                    $.Toast("请求失败", "错误代码"+msg.status, "success", {
+                    $.Toast("请求失败", "错误代码" + msg.status, "success", {
                         has_icon: true,
                         has_close_btn: true,
                         fullscreen: false,

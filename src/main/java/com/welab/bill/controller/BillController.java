@@ -47,8 +47,6 @@ public class BillController {
     public Map<String,Object> selectByBillDate(@Param("start_date") String start_date,@Param("end_date") String end_date,
                                          HttpServletRequest request) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(start_date);
-        System.out.println(end_date);
         Date start = dateFormat.parse(start_date);
         Date end = dateFormat.parse(end_date);
         List<Tbbill> bill = billService.selectBill(start,end);
@@ -67,7 +65,6 @@ public class BillController {
     @ResponseBody
     public Map<String, String> deleteByBillId(@RequestBody Tbbill bill, HttpServletRequest request) {
         String billid = bill.getBillid();
-        System.out.println(billid);
         Map<String, String> map = new HashMap<>();
         if (billService.deleteBill(billid)) {
             map.put("successmsg", "success");
@@ -90,12 +87,6 @@ public class BillController {
             bill.setClassa(null);
         }
         Map<String,String> map = new HashMap<>();
-        System.out.println(bill.getBilldate());
-        System.out.println(bill.getUsername());
-        System.out.println(bill.getBillamount());
-        System.out.println(bill.getBillinfo());
-        System.out.println(bill.getClassa());
-        System.out.println(bill.getTypeid());
         if(billService.insertBill(bill)){
             map.put("successmsg", "success");
         } else {

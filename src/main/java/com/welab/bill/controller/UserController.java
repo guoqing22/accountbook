@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +36,8 @@ public class UserController {
 
     /**
      * 注册
-     * @param user 接受用户信息 json
+     *
+     * @param user    接受用户信息 json
      * @param request
      * @return map json
      * @throws Exception
@@ -50,8 +54,7 @@ public class UserController {
         String info = user.getUserinfo();
         Date birthday = user.getBirthday();
         Double amount = user.getUseramount();
-        System.out.println(username + ":" + password + ":" + name + ":" + info + ":" + amount + ":" + user.getBirthday());
-        if (userService.checkRegisterUsername(username)) {
+                if (userService.checkRegisterUsername(username)) {
             map.put("errormsg", "用户名重复");
         }
         if (!userService.checkRegisterUsername(username)) {
@@ -68,10 +71,9 @@ public class UserController {
                 amount = 0.00;
                 user.setUseramount(amount);
             }
-            if(userService.addUser(user)){
+            if (userService.addUser(user)) {
                 map.put("successmsg", "success");
-            }
-            else{
+            } else {
                 map.put("errormsg", "注册失败，请稍后重试");
             }
 
@@ -82,7 +84,8 @@ public class UserController {
 
     /**
      * 登陆
-     * @param user 接收用户名和密码
+     *
+     * @param user    接收用户名和密码
      * @param request
      * @return
      * @throws Exception
@@ -110,7 +113,8 @@ public class UserController {
 
     /**
      * 根据用户名查询用户信息
-     * @param user 用于接受用户名
+     *
+     * @param user    用于接受用户名
      * @param request
      * @return
      * @throws Exception
@@ -118,22 +122,29 @@ public class UserController {
     @RequestMapping("/getuserinfo")
     @ResponseBody
     public Map<String, Object> getUserInfo(@RequestBody Tbuser user,
-                                     HttpServletRequest request) throws Exception {
+                                           HttpServletRequest request) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         if (user.getUsername() == null) {
             map.put("errormsg", "用户名不为空");
         }
         user = userService.getUserByUserName(user.getUsername());
         if (user != null) {
-            map.put("data",user);
+            map.put("data", user);
         } else {
             map.put("data", "error");
         }
         return map;
     }
 
+
+    @RequestMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException {
+        session.invalidate();
+    }
+
     /**
      * index页面
+     *
      * @return
      */
     @RequestMapping("/index")
