@@ -1,5 +1,6 @@
 package com.welab.bill.dao;
 
+import com.welab.bill.pojo.MyJss;
 import com.welab.bill.pojo.Tbbill;
 import org.apache.ibatis.annotations.Param;
 
@@ -55,8 +56,28 @@ public interface TbbillMapper {
      */
     int updateByPrimaryKey(Tbbill record);
 
+    /**
+     *
+     * @param start
+     * @param end
+     * @return
+     */
     List<Tbbill> selectByBillDate(@Param("start") Date start,@Param("end") Date end);
 
+    /**
+     *
+     * @return
+     */
     List<Tbbill> findAll();
+
+    /**
+     *查询某人某个时间段内每天的收支情况
+     *
+     * @param username
+     * @param start
+     * @param end
+     * @return
+     */
+    List<MyJss> mrmgsjdmtszqk(@Param("username") Integer username,@Param("start") Date start,@Param("end") Date end);
 
 }

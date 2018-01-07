@@ -14,12 +14,14 @@ import java.util.List;
 public interface ITypeService {
     /**
      * 查询所有收入选项
+     *
      * @return
      */
     public List<Tbdrawtype> listDrawType();
 
     /**
      * 查询所有支出选项
+     *
      * @return
      */
     public List<Tbdeposittype> listDepositType();

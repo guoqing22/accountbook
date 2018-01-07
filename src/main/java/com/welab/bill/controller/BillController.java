@@ -3,6 +3,7 @@ package com.welab.bill.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.welab.bill.pojo.MyJss;
 import com.welab.bill.pojo.Tbbill;
 import com.welab.bill.pojo.Tbuser;
 import com.welab.bill.service.IBillService;
@@ -136,4 +137,32 @@ public class BillController {
     public String insert() {
         return "insert";
     }
+    /**
+     * insert页面
+     * @return
+     */
+    @RequestMapping("/select")
+    public String select() {
+        return "select";
+    }
+
+
+
+
+    @RequestMapping("/mrmgsjdmtszqk")
+    @ResponseBody
+    public Map<String,Object> mrmgsjdmtszqk(@RequestBody MyJss myJss, HttpServletRequest request) throws ParseException {
+        Map<String,Object> map = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Integer username = myJss.getUsername();
+        String startDate = myJss.getStartDate();
+        String endDate = myJss.getEndDate();
+        Date start = dateFormat.parse(startDate);
+        Date end = dateFormat.parse(endDate);
+        List<MyJss> myJss1 = billService.mrmgsjdmtszqk(username,start,end);
+        map.put("data", myJss1);
+        return map;
+    }
+
+
 }

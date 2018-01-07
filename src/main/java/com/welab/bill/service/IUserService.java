@@ -15,12 +15,14 @@ import java.util.Map;
 public interface IUserService {
     /**
      * 通过用户名显示用户信息
+     *
      * @param username 用户名
      * @return
      */
     public Tbuser getUserByUserName(Integer username);
     /**
      *验证登录
+     *
      * @param username 用户名
      * @param password 密码
      * @return
@@ -29,6 +31,7 @@ public interface IUserService {
 
     /**
      * 注册用户名重复验证
+     *
      * @param username 用户名
      * @return
      */
@@ -36,6 +39,7 @@ public interface IUserService {
 
     /**
      * 注册
+     *
      * @param user
      * @return
      */

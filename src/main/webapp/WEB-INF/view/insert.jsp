@@ -201,13 +201,13 @@
     </div>
     <div class="container">
         <div class="row" style="height: 50px">
-            <div class="col-md-4"><h3><a href="<%= basePath%>bill.jsp"><img class="logo"
+            <div class="col-md-4"><h3><a href="<%=basePath%>bill/index"><img class="logo"
                                                                             src="<%= basePath%>resources/img/284843.png"/>
                 个人帐务管理系统</a></h3>
             </div>
             <div class="col-md-4 pull-right">
                 <ul class="nav nav-pills">
-                    <li role="presentation"><a href="#">首页</a></li>
+                    <li role="presentation"><a href="<%=basePath%>bill/index">首页</a></li>
                     <li role="presentation" id="userinfo"><a href="javascript:void(0)">个人资料</a></li>
                     <li role="presentation"><a href="#">安全设置</a></li>
                     <li role="presentation"><a href="#">关于</a></li>

@@ -21,6 +21,12 @@ import java.util.List;
 public class TypeServiceImpl implements ITypeService{
     @Resource
     private TbdrawtypeMapper drawtypeMapper;
+
+    /**
+     * 查询所有收入选项
+     *
+     * @return
+     */
     @Override
     public List<Tbdrawtype> listDrawType() {
         List<Tbdrawtype> drawtype = drawtypeMapper.getAll();
@@ -29,6 +35,12 @@ public class TypeServiceImpl implements ITypeService{
 
     @Resource
     private TbdeposittypeMapper deposittypeMapper;
+
+    /**
+     * 查询所有支出选项
+     *
+     * @return
+     */
     @Override
     public List<Tbdeposittype> listDepositType() {
         List<Tbdeposittype> deposittype = deposittypeMapper.getAll();

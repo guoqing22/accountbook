@@ -22,6 +22,12 @@ public class UserServiceImpl implements IUserService {
     @Resource
     private TbuserMapper userMapper;
 
+    /**
+     * 通过用户名显示用户信息
+     *
+     * @param username 用户名
+     * @return
+     */
     @Override
     public Tbuser getUserByUserName(Integer username) {
         Tbuser user = userMapper.selectByPrimaryKey(username);
@@ -29,6 +35,13 @@ public class UserServiceImpl implements IUserService {
     }
 
 
+    /**
+     * 验证登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return
+     */
     @Override
     public Tbuser checkLogin(Integer username, String password) {
         Tbuser user = userMapper.selectByPrimaryKey(username);
@@ -38,6 +51,12 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
+    /**
+     * 注册用户名重复验证
+     *
+     * @param username 用户名
+     * @return
+     */
     @Override
     public boolean checkRegisterUsername(Integer username) {
         Tbuser user = userMapper.selectByPrimaryKey(username);
@@ -48,6 +67,12 @@ public class UserServiceImpl implements IUserService {
         }
     }
 
+    /**
+     * 注册
+     *
+     * @param user
+     * @return
+     */
     @Override
     public boolean addUser(Tbuser user) {
         int num = userMapper.insert(user);
