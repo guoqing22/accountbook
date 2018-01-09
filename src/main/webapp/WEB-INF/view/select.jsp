@@ -233,9 +233,9 @@
                     <div class="link-title-a">&#9733; 图表信息</div>
                     <div class="link-title-b">
                         <ul>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284871.png">&nbsp;收支对比</a>
+                            <li><a href="<%=basePath%>bill/ta"><img class="png" src="<%= basePath%>resources/img/284871.png">&nbsp;收支总计</a>
                             </li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284859.png">&nbsp;花费去向</a>
+                            <li><a href="<%=basePath%>bill/tb"><img class="png" src="<%= basePath%>resources/img/284859.png">&nbsp;花费去向</a>
                             </li>
                             <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284861.png">&nbsp;收入来源</a>
                             </li>
@@ -327,99 +327,7 @@
         </div>
     </div>
 </div>
-<!--main char-->
-<%--<script>
 
-    var myChart = echarts.init(document.getElementById('main'), 'infographic');
-
-    option = {
-        title: {
-            //text: '2000-2016年中国汽车销量及增长率'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        toolbox: {
-            feature: {
-                magicType: {
-                    type: ['line', 'bar', 'stack', 'tiled']
-                },
-                dataView: {},
-                saveAsImage: {
-                    pixelRatio: 2
-                },
-                brush: {
-                    type: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear']
-                },
-                restore: {},
-                dataZoom: {},
-            }
-        },
-        grid: {
-            containLabel: true
-        },
-        legend: {
-            data: ['增速', '销量']
-        },
-        xAxis: [{
-            type: 'category',
-            axisTick: {
-                alignWithLabel: true
-            },
-            data: ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016']
-        }],
-        yAxis: [{
-            type: 'value',
-            name: '增速',
-            min: 0,
-            max: 50,
-            position: 'right',
-            axisLabel: {
-                formatter: '{value} %'
-            }
-        }, {
-            type: 'value',
-            name: '销量',
-            min: 0,
-            max: 3000,
-            position: 'left'
-        }],
-        series: [{
-            name: '增速',
-            type: 'line',
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'top'
-                }
-            },
-            lineStyle: {
-                normal: {
-                    width: 3,
-                    shadowColor: 'rgba(0,0,0,0.4)',
-                    shadowBlur: 10,
-                    shadowOffsetY: 10
-                }
-            },
-            data: [1, 13, 37, 35, 15, 13, 25, 21, 6, 45, 32, 2, 4, 13, 6, 4, 11]
-        }, {
-            name: '销量',
-            type: 'bar',
-            yAxisIndex: 1,
-            stack: '总量',
-            label: {
-                normal: {
-                    show: true,
-                    position: 'top'
-                }
-            },
-            data: [209, 236, 325, 439, 507, 576, 722, 879, 938, 1364, 1806, 1851, 1931, 2198, 2349, 2460, 2735]
-        }]
-    };
-
-    myChart.setOption(option);
-</script>--%>
 <!--时间输入框设置-->
 <script type="text/javascript">
     var table;
@@ -706,18 +614,15 @@
         $("#searchEndDateRange").html(end_date);
         $('#reportrange').daterangepicker(
             {
-                // startDate: moment().startOf('day'),
-                //endDate: moment(),
-                //minDate: '01/01/2012',    //最小时间
                 maxDate: moment(), //最大时间
                 dateLimit: {
                     days: 365
                 }, //起止时间的最大间隔
                 showDropdowns: true,
-                showWeekNumbers: false, //是否显示第几周
-                timePicker: true, //是否显示小时和分钟
-                timePickerIncrement: 60, //时间的增量，单位为分钟
-                timePicker12Hour: false, //是否使用12小时制来显示时间
+                showWeekNumbers: false,
+                timePicker: true,
+                timePickerIncrement: 60,
+                timePicker12Hour: false,
                 ranges: {
                     //'最近1小时': [moment().subtract('hours',1), moment()],
                     '今日': [moment().startOf('day'), moment()],
@@ -725,11 +630,11 @@
                     '最近7日': [moment().subtract('days', 6), moment()],
                     '最近30日': [moment().subtract('days', 29), moment()]
                 },
-                opens: 'right', //日期选择框的弹出位置
+                opens: 'right',
                 buttonClasses: ['btn btn-default'],
                 applyClass: 'btn-small btn-primary blue',
                 cancelClass: 'btn-small',
-                format: 'YYYY-MM-DD HH:mm:ss', //控件中from和to 显示的日期格式
+                format: 'YYYY-MM-DD HH:mm:ss',
                 separator: ' to ',
                 locale: {
                     applyLabel: '确定',

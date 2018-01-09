@@ -145,6 +145,15 @@ public class BillController {
     public String select() {
         return "select";
     }
+    @RequestMapping("/ta")
+    public String ta() {
+        return "ta";
+    }
+
+    @RequestMapping("/tb")
+    public String tb() {
+        return "tb";
+    }
 
 
 
@@ -164,5 +173,34 @@ public class BillController {
         return map;
     }
 
+    @RequestMapping("/a")
+    @ResponseBody
+    public Map<String,Object> a(@RequestBody MyJss myJss, HttpServletRequest request) throws ParseException {
+        System.out.println("hkhjhjkhkh");
+        Map<String,Object> map = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Integer username = myJss.getUsername();
+        String startDate = myJss.getStartDate();
+        String endDate = myJss.getEndDate();
+        Date start = dateFormat.parse(startDate);
+        Date end = dateFormat.parse(endDate);
+        List<MyJss> myJss1 = billService.a(username,start,end);
+        map.put("data", myJss1);
+        return map;
+    }
 
+    @RequestMapping("/b")
+    @ResponseBody
+    public Map<String,Object> b(@RequestBody MyJss myJss, HttpServletRequest request) throws ParseException {
+        Map<String,Object> map = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Integer username = myJss.getUsername();
+        String startDate = myJss.getStartDate();
+        String endDate = myJss.getEndDate();
+        Date start = dateFormat.parse(startDate);
+        Date end = dateFormat.parse(endDate);
+        List<MyJss> myJss1 = billService.b(username,start,end);
+        map.put("data", myJss1);
+        return map;
+    }
 }

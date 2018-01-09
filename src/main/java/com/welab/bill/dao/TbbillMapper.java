@@ -80,4 +80,9 @@ public interface TbbillMapper {
      */
     List<MyJss> mrmgsjdmtszqk(@Param("username") Integer username,@Param("start") Date start,@Param("end") Date end);
 
+
+    List<MyJss> a(@Param("username") Integer username,@Param("start") Date start,@Param("end") Date end);
+
+
+    List<MyJss> b(@Param("username") Integer username,@Param("start") Date start,@Param("end") Date end);
 }

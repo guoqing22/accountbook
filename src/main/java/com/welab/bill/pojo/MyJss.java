@@ -64,6 +64,13 @@ public class MyJss {
         this.username = username;
     }
 
+    public String getClassa() {
+        return classa;
+    }
+
+    public void setClassa(String classa) {
+        this.classa = classa;
+    }
     /**
      * 收入
      */
@@ -92,6 +99,8 @@ public class MyJss {
      * 用户名
      */
     private Integer username;
+
+    private String classa;
 
 
 }

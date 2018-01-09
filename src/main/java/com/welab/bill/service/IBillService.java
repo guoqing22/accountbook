@@ -67,4 +67,9 @@ public interface IBillService {
      * @return
      */
     public List<MyJss> mrmgsjdmtszqk(Integer username,Date startdate,Date enddate);
+
+
+    public List<MyJss> a(Integer username,Date startdate,Date enddate);
+
+    public List<MyJss> b(Integer username,Date startdate,Date enddate);
 }

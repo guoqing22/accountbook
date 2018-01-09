@@ -33,11 +33,8 @@ public class HandlerInterceptor1 extends HandlerInterceptorAdapter {
                              Object arg2) throws Exception {
         HttpSession session = request.getSession();
         if (session.getAttribute("username")!=null) {
-            //登陆成功的用户
             return true;
         } else {
-            //没有登陆，转向登陆界面
-            //request.getRequestDispatcher("/login.jsp").forward(request, arg1);
             response.sendRedirect("/login.jsp");
             return false;
         }

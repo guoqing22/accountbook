@@ -245,9 +245,9 @@
                     <div class="link-title-a">&#9733; 图表信息</div>
                     <div class="link-title-b">
                         <ul>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284871.png">&nbsp;收支对比</a>
+                            <li><a href="<%=basePath%>bill/ta"><img class="png" src="<%= basePath%>resources/img/284871.png">&nbsp;收支总计</a>
                             </li>
-                            <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284859.png">&nbsp;花费去向</a>
+                            <li><a href="<%=basePath%>bill/tb"><img class="png" src="<%= basePath%>resources/img/284859.png">&nbsp;花费去向</a>
                             </li>
                             <li><a href="#"><img class="png" src="<%= basePath%>resources/img/284861.png">&nbsp;收入来源</a>
                             </li>

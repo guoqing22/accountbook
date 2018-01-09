@@ -1,6 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: qing
+  Date: 2018/1/8
+  Time: 22:56
+  To change this template use File | Settings | File Templates.
+--%>
+<%--
+  Created by IntelliJ IDEA.
+  User: qing
+  Date: 2018/1/8
+  Time: 21:21
+  To change this template use File | Settings | File Templates.
+--%>
+<%--
+  Created by IntelliJ IDEA.
+  User: qing
   Date: 2018/1/7
   Time: 17:41
   To change this template use File | Settings | File Templates.
@@ -282,13 +296,13 @@
 <script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'), 'roma');
-
     myChart.setOption({
         title: {
-            text: '上周账单'
+            text: '支出分类'
         },
-        tooltip: {
-            trigger: 'axis'
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         toolbox: {
             feature: {
@@ -309,36 +323,73 @@
         grid: {
             containLabel: true
         },
-        legend: {
-            data: ['收入', '支出', '净剩']
+        legend:{
+            data: []
         },
-        xAxis: {
-            type: "category",
-            data: ["2018-01-01","2018-01-02","2018-01-03","2018-01-04","2018-01-05","2018-01-06","2018-01-07"],
-        },
-        yAxis: [
+        series : [
             {
-                type: 'value'
-            }
-        ],
-        series: [
-            {
-                name: '净剩',
-                type: 'line',
-                data: [100,800,-80,-80,900,700,0]
-            },
-            {
-                name: '支出',
-                type: 'line',
-                data: [100,200,80,80,100,100,0]
-            },
-            {
-                name: '收入',
-                type: 'line',
-                data: [200,1000,0,0,1000,800,0]
+                name: '支出分类',
+                type: 'pie',
+                radius: '55%',
+                data:[],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: true,
+                            formatter: '{b} : {c} \n ({d}%)'
+                        },
+                        labelLine: {
+                            show: true
+                        },
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
             }
         ]
-    });
+    })
+    $.ajax({
+        url: "<%= basePath%>bill/b",
+        type: "post",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+            "username": <%=username1%>,
+            "startDate": moment("2017-12-7").format("YYYY-MM-DD"),
+            "endDate": moment("2018-01-08").format("YYYY-MM-DD"),
+        }),
+        success: function (data) {
+            var dataJson = data.data;
+            var datas = [];
+            var map = {};
+            var name1 = [];
+            for(var i in dataJson){
+                var map = {};
+                map.value = dataJson[i].netBalance;
+                map.name = dataJson[i].classa;
+                name1.push(dataJson[i].classa);
+                datas.push(map);
+                console.log(map.value)
+                console.log(map.name)
+                console.log(datas[i])
+            }
+            myChart.setOption({
+                legend: {
+                    data: name1
+                },
+                series: [{
+                    data: datas
+                }]
+
+            })
+        },
+        error: function (msg) {
+            alert(msg.status)
+        }
+    })
 </script>
 <script type="text/javascript">
     $(function () {
@@ -441,3 +492,5 @@
 </script>
 </body>
 </html>
+
+

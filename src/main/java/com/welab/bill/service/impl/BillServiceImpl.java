@@ -121,4 +121,16 @@ public class BillServiceImpl implements IBillService {
         return myJss;
     }
 
+    @Override
+    public List<MyJss> a(Integer username, Date startdate, Date enddate) {
+        List<MyJss> myJss = billMapper.a(username,startdate,enddate);
+        return myJss;
+    }
+
+    @Override
+    public List<MyJss> b(Integer username, Date startdate, Date enddate) {
+        List<MyJss> myJss = billMapper.b(username,startdate,enddate);
+        return myJss;
+    }
+
 }

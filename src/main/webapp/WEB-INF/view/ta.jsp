@@ -1,6 +1,13 @@
 <%--
   Created by IntelliJ IDEA.
   User: qing
+  Date: 2018/1/8
+  Time: 21:21
+  To change this template use File | Settings | File Templates.
+--%>
+<%--
+  Created by IntelliJ IDEA.
+  User: qing
   Date: 2018/1/7
   Time: 17:41
   To change this template use File | Settings | File Templates.
@@ -285,7 +292,7 @@
 
     myChart.setOption({
         title: {
-            text: '上周账单'
+            text: '收支总计'
         },
         tooltip: {
             trigger: 'axis'
@@ -309,12 +316,13 @@
         grid: {
             containLabel: true
         },
-        legend: {
-            data: ['收入', '支出', '净剩']
-        },
+
         xAxis: {
             type: "category",
-            data: ["2018-01-01","2018-01-02","2018-01-03","2018-01-04","2018-01-05","2018-01-06","2018-01-07"],
+            data: ['收入', '支出', '净剩'],
+            axisTick: {
+                alignWithLabel: true
+            }
         },
         yAxis: [
             {
@@ -323,22 +331,58 @@
         ],
         series: [
             {
-                name: '净剩',
-                type: 'line',
-                data: [100,800,-80,-80,900,700,0]
+                name: '金额',
+                type: 'bar',
+                data: [],
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            var colorList = ['rgb(164,205,238)', 'rgb(42,170,227)', 'rgb(25,46,94)', 'rgb(195,229,235)'];
+                            return colorList[params.dataIndex];
+                        }
+                    },
+                    //鼠标悬停时：
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
             },
-            {
-                name: '支出',
-                type: 'line',
-                data: [100,200,80,80,100,100,0]
-            },
-            {
-                name: '收入',
-                type: 'line',
-                data: [200,1000,0,0,1000,800,0]
-            }
+
         ]
-    });
+    })
+    $.ajax({
+        url: "<%= basePath%>bill/a",
+        type: "post",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({
+            "username": <%=username1%>,
+            "startDate": moment("2017-12-7").format("YYYY-MM-DD"),
+            "endDate": moment("2018-01-08").format("YYYY-MM-DD"),
+        }),
+        success: function (data) {
+            var dataJson = data.data
+            var a = [];
+            for(var i in dataJson){
+                a.push(dataJson[i].drawAmount);
+                a.push(dataJson[i].depositAmount);
+                a.push(dataJson[i].netBalance)
+
+            }
+            myChart.setOption({
+
+                series: [{
+                    data: a
+                }]
+
+            })
+        },
+        error: function (msg) {
+            alert(msg.status)
+        }
+    })
 </script>
 <script type="text/javascript">
     $(function () {
@@ -441,3 +485,4 @@
 </script>
 </body>
 </html>
+
